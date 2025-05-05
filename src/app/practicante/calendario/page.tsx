@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { postAsistencia } from '@/lib/api/asistencias';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { differenceInHours, format, parse } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import 'react-calendar/dist/Calendar.css'; // Estilos base
 import { toast } from 'sonner';
 
@@ -24,7 +24,9 @@ export default function Page() {
 
     const data: { practicante: Practicante, horas: Asistencia[] } | undefined = queryClient.getQueryData(["initPracticante"]);
 
-    const horas: Asistencia[] = data?.horas || [];
+    const horas: Asistencia[] = useMemo(() => {
+        return data?.horas || [];
+      }, [data]);
 
     const { mutate: registrarAsistencia, isPending } = useMutation({
         mutationFn: postAsistencia,

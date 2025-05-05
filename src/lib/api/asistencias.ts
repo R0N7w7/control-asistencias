@@ -24,9 +24,13 @@ export async function fetchInitData() {
   return res.json();
 }
 
-export async function deleteAsistencia(id: string) {
-  const res = await fetch(`/api/asistencias/${id}`, {
+export async function deleteAsistencia(fecha: string) { // Ahora recibe la fecha como argumento
+  const res = await fetch(`/api/asistencias`, { // La URL ahora es la base
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json", // Indica que estamos enviando JSON en el body
+    },
+    body: JSON.stringify({ fecha }), // Envía la fecha en el cuerpo como JSON
   });
 
   if (!res.ok) {

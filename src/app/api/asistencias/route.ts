@@ -51,3 +51,44 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ message: 'Asistencia registrada correctamente' }, { status: 201 })
 }
+
+export async function DELETE(req: Request) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: sessionError,
+  } = await supabase.auth.getUser();
+
+  if (!user || sessionError) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
+
+  let requestBody: { fecha?: string };
+
+  try {
+    requestBody = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'Body inválido, no es JSON válido' }, { status: 400 });
+  }
+
+  const { fecha } = requestBody;
+
+  if (!fecha) {
+    console.log("Fecha no proporcionada en el body");
+    return NextResponse.json({ error: 'La fecha es requerida en el body' }, { status: 400 });
+  }
+
+  const { error: deleteError } = await supabase
+    .from('asistencias')
+    .delete()
+    .eq('user_id', user.id)
+    .eq('fecha', fecha);
+
+  if (deleteError) {
+    console.error(deleteError);
+    return NextResponse.json({ error: 'Error al eliminar la asistencia' }, { status: 500 });
+  }
+
+  return NextResponse.json({ message: 'Asistencia eliminada correctamente' }, { status: 200 });
+}
