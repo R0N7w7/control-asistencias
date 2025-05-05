@@ -1,7 +1,5 @@
 "use client";
 import DashboardMenu from "@/components/practicante/DashboardMenu";
-import { fetchInitData } from "@/lib/api/asistencias";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 type Props = {
@@ -9,14 +7,6 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-
-    const { isLoading, isError } = useQuery({
-        queryKey: ["initPracticante"],
-        queryFn: fetchInitData,
-    });
-
-    if (isLoading) return <div>Cargando tu panel, aguanta un poco…</div>;
-    if (isError) return <div>Ocurrió un error al cargar tu información 😢</div>;
 
     return (
         <div>

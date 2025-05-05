@@ -1,6 +1,9 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Calendar1Icon, HistoryIcon, HomeIcon, LogOutIcon, MenuIcon, SheetIcon } from "lucide-react";
+import { Calendar1Icon, HistoryIcon, HomeIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 const enlaces = [
     {
@@ -18,17 +21,22 @@ const enlaces = [
         icon: <HistoryIcon />,
         href: '/practicante/historial',
     },
-    {
-        title: 'Reportes',
-        icon: <SheetIcon />,
-        href: '/practicante/reportes',
-    },
 ];
 
 const DashboardMenu = () => {
+    const router = useRouter();
+    const [open, setOpen] = useState<boolean>(false);
+
+    const client = createClient();
+
+    const handleClick = (href: string) => {
+        setOpen(false);
+        router.push(href);
+    }
+
     return (
         <header className="h-16 flex gap-4 items-center justify-between w-full">
-            <Sheet>
+            <Sheet open={open} onOpenChange={() => setOpen(!open)}>
                 <SheetTrigger>
                     <div className='px-4'>
                         <MenuIcon size={24} />
@@ -43,7 +51,7 @@ const DashboardMenu = () => {
                     </SheetHeader>
                     <div className="h-full flex flex-col px-4">
                         {enlaces.map((enlace, index) => (
-                            <div key={index} className='flex gap-4 w-full border-b py-6 items-center'>
+                            <div onClick={() => handleClick(enlace.href)} key={index} className='flex gap-4 w-full border-b py-6 items-center'>
                                 {enlace.icon}
                                 <p className='text-xl font-semibold'>{enlace.title}</p>
                             </div>
@@ -52,7 +60,7 @@ const DashboardMenu = () => {
                 </SheetContent>
             </Sheet>
             <p className='w-full font-semibold text-xl ml-2'>Servicio Social</p>
-            <div className='px-4'>
+            <div className='px-4' onClick={() => client.auth.signOut()}>
                 <LogOutIcon size={24} />
             </div>
         </header>

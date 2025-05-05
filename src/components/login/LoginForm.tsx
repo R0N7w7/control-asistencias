@@ -3,12 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation"; // Importar el hook de navegación
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function LoginForm() {
     const [tipoUsuario, setTipoUsuario] = useState<"practicante" | "administrador">("practicante");
+    const router = useRouter();  // Usar el hook de navegación para redirigir
 
     const form = useForm({
         defaultValues: {
@@ -22,11 +25,27 @@ export default function LoginForm() {
             ? "Ingresa como practicante para gestionar tus horas de servicio."
             : "Ingresa para validar, gestionar y administrar tus practicantes.";
 
-    const handleSubmit = (data: object) => {
-        toast("Enviando data al backend", {
-            position: 'top-left',
-            description: data.correo,
+    const handleSubmit = async (data: {
+        correo: string;
+        contraseña: string;
+    }) => {
+        const supabase = createClient()
+
+        // Intentar iniciar sesión con el correo y la contraseña
+        const { error } = await supabase.auth.signInWithPassword({
+            email: data.correo,
+            password: data.contraseña,
         });
+
+        if (error) {
+            // Mostrar un error si la autenticación falla
+            toast.error("Error en las credenciales, intenta de nuevo", {
+                position: 'top-left',
+            });
+            return;
+        }
+
+        router.push("practicante");
     };
 
     return (

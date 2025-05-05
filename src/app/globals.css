@@ -120,3 +120,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+.tile-validado {
+  background: #d4edda;
+  color: #155724;
+}
+.tile-pendiente {
+  background: #fff3cd;
+  color: #856404;
+}
+.tile-falta {
+  background: #f8d7da;
+  color: #721c24;
+}
