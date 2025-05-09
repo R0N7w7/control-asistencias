@@ -1,17 +1,18 @@
 "use client"
 import TablaHistorial from '@/components/practicante/historial/TablaHistorial';
 import { Button } from '@/components/ui/button';
+import { fetchInitData } from '@/lib/api/asistencias';
 import { exportToExcel } from '@/lib/generarReporte';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { FileDownIcon } from 'lucide-react';
 import 'react-calendar/dist/Calendar.css';
 
 export default function Page() {
 
-    const queryClient = useQueryClient();
-
-    const data: { practicante: Practicante, horas: Asistencia[] } | undefined = queryClient.getQueryData(["initPracticante"]);
-
+    const { data } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
+        queryKey: ["initPracticante"],
+        queryFn: fetchInitData,
+    });
     return (
         <>
             <div className='w-full flex flex-col sm:flex-row items-end'>

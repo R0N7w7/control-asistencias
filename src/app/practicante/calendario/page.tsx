@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { postAsistencia } from '@/lib/api/asistencias';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchInitData, postAsistencia } from '@/lib/api/asistencias';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { differenceInHours, format, parse } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import 'react-calendar/dist/Calendar.css'; // Estilos base
@@ -22,11 +22,14 @@ export default function Page() {
 
     const queryClient = useQueryClient();
 
-    const data: { practicante: Practicante, horas: Asistencia[] } | undefined = queryClient.getQueryData(["initPracticante"]);
+    const { data } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
+        queryKey: ["initPracticante"],
+        queryFn: fetchInitData,
+    });
 
     const horas: Asistencia[] = useMemo(() => {
         return data?.horas || [];
-      }, [data]);
+    }, [data]);
 
     const { mutate: registrarAsistencia, isPending } = useMutation({
         mutationFn: postAsistencia,

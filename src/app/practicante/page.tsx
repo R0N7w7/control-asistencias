@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { fetchInitData } from "@/lib/api/asistencias";
 import { exportToExcel } from "@/lib/generarReporte";
 import { procesarDatos } from "@/lib/transformarHoras";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Calendar1Icon, ClockIcon, FileDownIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -22,11 +23,13 @@ import {
 
 export default function PracticantePage() {
 
-  const queryClient = useQueryClient();
-
   const router = useRouter();
 
-  const data: { practicante: Practicante, horas: Asistencia[] } | undefined = queryClient.getQueryData(["initPracticante"]);
+  const { data } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
+    queryKey: ["initPracticante"],
+    queryFn: fetchInitData,
+  });
+
   const practicante = data?.practicante || { horasTotales: 0, nombre: "" };
   const horas = data?.horas || [];
   const hoy = new Date();
