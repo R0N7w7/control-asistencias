@@ -11,12 +11,14 @@ import { Button } from '@/components/ui/button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteAsistencia } from '@/lib/api/asistencias'
 import { toast } from 'sonner'
+import { Spinner } from '@/components/ui/spinner'
 
 type Props = {
     data: Asistencia[];
+    isLoading: boolean;
 }
 
-export default function TablaHistorial({ data }: Props) {
+export default function TablaHistorial({ data, isLoading }: Props) {
     const queryClient = useQueryClient();
     const [busqueda, setBusqueda] = useState<string>("");
     const [tipoBusqueda, SetTipoBusqueda] = useState<string>("todo");
@@ -40,7 +42,6 @@ export default function TablaHistorial({ data }: Props) {
             queryClient.invalidateQueries({
                 queryKey: ["initPracticante"],
             });
-            queryClient.refetchQueries({ queryKey: ["initPracticante"] });
         },
         onError: (error: Error) => {
             toast.error(error.message || "❌ Ocurrió un error al eliminar asistencia", {
@@ -134,7 +135,7 @@ export default function TablaHistorial({ data }: Props) {
             </div>
 
             <div className='border rounded-sm'>
-                <DataTable columns={columns} data={filteredData} />
+                {isLoading ? <Spinner className='text-[#b91116] my-8'/> : <DataTable columns={columns} data={filteredData} />}
             </div>
         </div>
     )

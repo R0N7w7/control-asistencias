@@ -3,6 +3,7 @@ import Calendario from '@/components/practicante/calendario/Calendario';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { fetchInitData, postAsistencia } from '@/lib/api/asistencias';
@@ -19,10 +20,11 @@ export default function Page() {
     const [hora_inicio, setHoraInicio] = useState<string>("");
     const [hora_fin, setHorafin] = useState<string>("");
     const [actividades, setActividades] = useState<string>("");
+    const [descripcion, setDescripcion] = useState<string>("");
 
     const queryClient = useQueryClient();
 
-    const { data } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
+    const { data, isLoading } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
         queryKey: ["initPracticante"],
         queryFn: fetchInitData,
     });
@@ -34,7 +36,7 @@ export default function Page() {
     const { mutate: registrarAsistencia, isPending } = useMutation({
         mutationFn: postAsistencia,
         onSuccess: () => {
-            toast.success("✅ Asistencia registrada correctamente", {
+            toast.success("✅ Registro exitoso", {
                 position: "top-left",
             });
 
@@ -44,7 +46,7 @@ export default function Page() {
 
         },
         onError: (error) => {
-            toast.error(error.message || "❌ Ocurrió un error al registrar asistencia", {
+            toast.error(error.message || "❌ Ocurrió un error al registrar", {
                 position: "top-left",
             });
         },
@@ -71,7 +73,7 @@ export default function Page() {
 
         const duracion = differenceInHours(hora_fin_date, hora_inicio_date);
 
-        const data = {
+        const data: Asistencia = {
             fecha: format(fechaSeleccionada || new Date(), "yyyy-MM-dd"),
             hora_fin,
             hora_inicio,
@@ -79,9 +81,24 @@ export default function Page() {
             estado: "pendiente",
             duracion,
         };
-        console.log(data);
         registrarAsistencia(data);
     };
+
+    const handleSubmitFalta = () => {
+        const fecha = format(fechaSeleccionada || new Date(), "yyyy-MM-dd");
+
+        const data: Asistencia = {
+            fecha,
+            actividades: `${actividades}${descripcion ? `: ${descripcion}` : ''}`.trim(),
+            estado: "falta",
+            duracion: 0,
+        };
+
+        console.log(data);
+    };
+
+    if (isLoading) return <Spinner className="text-[#b91116]" />
+
     return (
         <>
             <div className="flex flex-col gap-1 w-full">
@@ -128,7 +145,7 @@ export default function Page() {
                         <TabsContent value='falta' className='mt-2 flex flex-col gap-2'>
                             <div className='flex gap-2 w-full flex-col'>
                                 <p className='text-base font-semibold text-neutral-600'>Motivo de ausencia:</p>
-                                <Select>
+                                <Select onValueChange={(value) => setActividades(value)}>
                                     <SelectTrigger className="w-full py-5">
                                         <SelectValue placeholder="Selecciona un motivo" />
                                     </SelectTrigger>
@@ -146,7 +163,7 @@ export default function Page() {
 
                             <div className='flex gap-2 w-full flex-col'>
                                 <p className='text-base font-semibold text-neutral-600'>Descripción (Opcional):</p>
-                                <Textarea placeholder='Detalla el motivo de tu ausencia a continuación' className='h-32' />
+                                <Textarea placeholder='Detalla el motivo de tu ausencia a continuación' className='h-32' value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
                             </div>
 
                             <div className='flex gap-2 w-full flex-col'>
@@ -154,7 +171,7 @@ export default function Page() {
                                 <Input type='file' />
                             </div>
 
-                            <Button className='bg-[#b91116] text-lg font-semibold mt-2'>Registrar Ausencia</Button>
+                            <Button className='bg-[#b91116] text-lg font-semibold mt-2' onClick={handleSubmitFalta} disabled={isPending}>Registrar Ausencia</Button>
                         </TabsContent>
                     </Tabs>
                 </div>

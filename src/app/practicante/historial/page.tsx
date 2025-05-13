@@ -9,10 +9,11 @@ import 'react-calendar/dist/Calendar.css';
 
 export default function Page() {
 
-    const { data } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
+    const { data, isLoading } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
         queryKey: ["initPracticante"],
         queryFn: fetchInitData,
     });
+
     return (
         <>
             <div className='w-full flex flex-col sm:flex-row items-end'>
@@ -26,7 +27,7 @@ export default function Page() {
             <div className="w-full border bg-white p-4 rounded-sm flex flex-col gap-0">
                 <h3 className="text-xl font-bold text-orange-600">Registro de Horas</h3>
                 <p className="text-lg font-medium text-neutral-600">Historial completo de horas y ausencias </p>
-                <TablaHistorial data={data?.horas || []} />
+                <TablaHistorial data={data?.horas || []} isLoading={isLoading} />
             </div>
         </>
     );

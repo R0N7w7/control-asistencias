@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchInitData } from "@/lib/api/asistencias";
 import { exportToExcel } from "@/lib/generarReporte";
@@ -25,7 +26,7 @@ export default function PracticantePage() {
 
   const router = useRouter();
 
-  const { data } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
+  const { data, isLoading } = useQuery<{ horas: Asistencia[], practicante: Practicante }>({
     queryKey: ["initPracticante"],
     queryFn: fetchInitData,
   });
@@ -45,6 +46,8 @@ export default function PracticantePage() {
     datosSemana,
     datosMes
   } = procesarDatos(horas, hoy, practicante);
+
+  if (isLoading) return <Spinner className="text-[#b91116]" />
 
   return (
     <>
