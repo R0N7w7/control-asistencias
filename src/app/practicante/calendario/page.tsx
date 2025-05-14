@@ -70,8 +70,13 @@ export default function Page() {
     const handleSubmitAsistencia = () => {
         const hora_inicio_date = parse(hora_inicio, 'HH:mm', new Date());
         const hora_fin_date = parse(hora_fin, 'HH:mm', new Date());
-
         const duracion = differenceInHours(hora_fin_date, hora_inicio_date);
+
+        if (duracion <= 0) {
+            toast.error("Verifica el horario seleccionado", {
+                position: "top-left",
+            });
+        }
 
         const data: Asistencia = {
             fecha: format(fechaSeleccionada || new Date(), "yyyy-MM-dd"),
@@ -81,6 +86,7 @@ export default function Page() {
             estado: "pendiente",
             duracion,
         };
+
         registrarAsistencia(data);
     };
 
@@ -94,7 +100,7 @@ export default function Page() {
             duracion: 0,
         };
 
-        console.log(data);
+        registrarAsistencia(data);
     };
 
     if (isLoading) return <Spinner className="text-[#b91116]" />
