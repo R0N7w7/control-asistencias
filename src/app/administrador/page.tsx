@@ -30,7 +30,11 @@ export default function PracticantePage() {
     queryFn: fetchResumeData,
   });
 
-  if (isLoading) return <Spinner className="text-[#b91116]" />
+  if (isLoading) return (
+    <div className='w-full h-full flex items-center justify-center'>
+      <Spinner size={'large'} className='text-[#b91116]' />
+    </div>
+  );
 
   return (
     <>

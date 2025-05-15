@@ -9,6 +9,7 @@ import { exportToExcel } from "@/lib/generarReporte";
 import { procesarDatos } from "@/lib/transformarHoras";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar1Icon, ClockIcon, FileDownIcon } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import {
@@ -139,34 +140,52 @@ export default function PracticantePage() {
 
         <div className="w-full border bg-white p-4 rounded-sm flex flex-col gap-0">
           <h3 className="text-xl font-bold text-orange-600">Actividad Reciente</h3>
-          <p className="text-lg font-medium text-neutral-600">Últimos registros de asistencia </p>
-          <div className="flex flex-col ">
-            {horas.slice(0, 5).map((registro) => (
-              <div key={registro.fecha} className="flex items-center justify-between gap-2 py-2 border-b mt-2">
-                <p className="text-base font-medium w-full">{registro.fecha}</p>
-                <div
-                  className={`flex items-center px-3 py-1 rounded-full border text-sm font-semibold ${registro.estado === 'validado'
-                    ? 'bg-green-100 text-green-700 border-green-300'
-                    : registro.estado === 'pendiente'
-                      ? 'bg-yellow-100 text-yellow-700 border-yellow-300'
-                      : registro.estado === 'falta'
-                        ? 'bg-red-100 text-red-700 border-red-300'
-                        : 'bg-gray-100 text-gray-700 border-gray-300'
-                    }`}
-                >
-                  {registro.estado === 'validado'
-                    ? 'Validado'
-                    : registro.estado === 'pendiente'
-                      ? 'Pendiente'
-                      : registro.estado === 'falta'
-                        ? 'Falta'
-                        : 'Desconocido'}
-                </div>
-                <p className="text-base font-bold">{registro.duracion}h</p>
+          <p className="text-lg font-medium text-neutral-600">Últimos registros de asistencia</p>
+
+          <div className="flex flex-col items-center justify-center min-h-[200px]">
+            {horas.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                <Image
+                  src="/no-data.svg"
+                  alt="Sin pendientes"
+                  width={220}
+                  height={220}
+                  className="mb-4"
+                />
+                <p className="text-lg">No hay registros recientes</p>
               </div>
-            ))}
+            ) : (
+              horas.slice(0, 5).map((registro) => (
+                <div
+                  key={registro.fecha}
+                  className="flex items-center justify-between gap-2 py-2 border-b mt-2 w-full"
+                >
+                  <p className="text-base font-medium w-full">{registro.fecha}</p>
+                  <div
+                    className={`flex items-center px-3 py-1 rounded-full border text-sm font-semibold ${registro.estado === 'validado'
+                      ? 'bg-green-100 text-green-700 border-green-300'
+                      : registro.estado === 'pendiente'
+                        ? 'bg-yellow-100 text-yellow-700 border-yellow-300'
+                        : registro.estado === 'falta'
+                          ? 'bg-red-100 text-red-700 border-red-300'
+                          : 'bg-gray-100 text-gray-700 border-gray-300'
+                      }`}
+                  >
+                    {registro.estado === 'validado'
+                      ? 'Validado'
+                      : registro.estado === 'pendiente'
+                        ? 'Pendiente'
+                        : registro.estado === 'falta'
+                          ? 'Falta'
+                          : 'Desconocido'}
+                  </div>
+                  <p className="text-base font-bold">{registro.duracion}h</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
+
       </div>
     </>
   );

@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "./button"
+import Image from "next/image"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -70,8 +71,17 @@ export function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No hay resultados.
+              <TableCell colSpan={columns.length} className="text-center">
+                <div className="flex flex-col items-center justify-center h-full py-6">
+                  <Image
+                    src="/no-data.svg"
+                    alt="Sin pendientes"
+                    width={220}
+                    height={220}
+                    className="mb-4"
+                  />
+                  <span className="text-lg font-semibold text-neutral-600">No hay datos para mostrar</span>
+                </div>
               </TableCell>
             </TableRow>
           )}
