@@ -18,6 +18,7 @@ import {
 import { useRouter } from 'next/navigation'
 import { JSX, useCallback, useState } from 'react'
 import { ConfirmDialog } from "../ui/confirmDialog"
+import Image from "next/image"
 
 const enlaces = [
   { title: 'Inicio', icon: <HomeIcon />, href: '/administrador/' },
@@ -80,7 +81,9 @@ const DashboardMenu = () => {
             </div>
           </SheetContent>
         </Sheet>
-        <p className='w-full font-semibold text-xl ml-2'>Servicio Social</p>
+        <div className="w-full flex items-center justify-center ">
+          <Image src={'/logo.png'} width={400} height={120} alt="logo" className="h-14 w-auto " />
+        </div>
         <ConfirmDialog
           title="¿Cerrar la sesión?"
           description="la sesión se cerrará, serás redirigido al inicio de sesión"
@@ -97,7 +100,9 @@ const DashboardMenu = () => {
 
       {/* Desktop */}
       <header className='hidden md:grid grid-cols-[1fr_auto_1fr] h-16 gap-4 items-center w-full'>
-        <p className='w-full font-semibold text-xl ml-2 flex items-center h-full'>Servicio Social</p>
+        <div className="w-full flex items-center ml-4">
+          <Image src={'/logo.png'} width={400} height={120} alt="logo" className="h-14 w-auto " />
+        </div>
         <div className="flex h-full px-4 items-center justify-center gap-4 lg:gap-8">
           {enlaces.map(({ title, icon, href }) => (
             <NavItem

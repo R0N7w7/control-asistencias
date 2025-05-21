@@ -55,7 +55,7 @@ export default function PracticantePage() {
       <div className="flex flex-col sm:flex-row gap-2 w-full items-end justify-between">
         <div className="flex flex-col gap-1 w-full items-start">
           <h2 className="text-3xl font-bold text-orange-600">
-            Bienvenido, {practicante.nombre}
+            Hola, {practicante.nombre}
           </h2>
           <p className="text-lg text-neutral-600 font-medium">
             Gestiona tus horas de servicio social
