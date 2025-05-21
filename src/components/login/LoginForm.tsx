@@ -45,7 +45,7 @@ export default function LoginForm() {
             return;
         }
 
-        router.push("practicante");
+        router.push(tipoUsuario);
     };
 
     return (

@@ -1,6 +1,6 @@
 import { addDays, format, isSameMonth, isSameWeek, parseISO, startOfWeek } from "date-fns";
 
-export function procesarDatos(horas: Asistencia[], hoy: Date, practicante: Practicante) {
+export function procesarDatos(horas: Asistencia[], hoy: Date, practicante: { horasTotales: number; nombre: string; }) {
     // Horas completadas y pendientes
     const horasCompletadas = horas
         .filter(r => r.estado === "validado")
@@ -9,6 +9,9 @@ export function procesarDatos(horas: Asistencia[], hoy: Date, practicante: Pract
     const horasPendientes = horas
         .filter(r => r.estado === "pendiente")
         .reduce((acc, r) => acc + r.duracion, 0);
+
+    const ausencias = horas
+        .filter(r => r.estado === "falta").length
 
     // Registros de esta semana
     const registrosSemana = horas.filter(r =>
@@ -88,6 +91,7 @@ export function procesarDatos(horas: Asistencia[], hoy: Date, practicante: Pract
         diasMes,
         porcentaje,
         datosSemana,
-        datosMes
+        datosMes,
+        ausencias
     };
 }  

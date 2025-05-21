@@ -1,8 +1,8 @@
 // app/admin/layout.tsx
 import { redirect } from 'next/navigation';
-import DashboardMenu from '@/components/practicante/DashboardMenu';
 import React from 'react';
 import { createClient } from '@/lib/supabase/server';
+import DashboardMenu from '@/components/administrador/DashboardMenu';
 
 type Props = {
     children: React.ReactNode;
@@ -27,7 +27,7 @@ export default async function Layout({ children }: Props) {
         .single();
 
     if (error || profile?.rol !== 'admin') {
-        return redirect('/unauthorized');
+        return redirect('/login');
     }
 
     return (

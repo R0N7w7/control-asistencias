@@ -64,7 +64,7 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
 
-  let requestBody: { fecha?: string };
+  let requestBody: { fecha?: string, user_id?: string };
 
   try {
     requestBody = await req.json();
@@ -72,7 +72,7 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: 'Body inválido, no es JSON válido' }, { status: 400 });
   }
 
-  const { fecha } = requestBody;
+  const { fecha, user_id } = requestBody;
 
   if (!fecha) {
     console.log("Fecha no proporcionada en el body");
@@ -82,7 +82,7 @@ export async function DELETE(req: Request) {
   const { error: deleteError } = await supabase
     .from('asistencias')
     .delete()
-    .eq('user_id', user.id)
+    .eq('user_id', user_id)
     .eq('fecha', fecha);
 
   if (deleteError) {

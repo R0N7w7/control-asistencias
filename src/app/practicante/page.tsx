@@ -66,7 +66,7 @@ export default function PracticantePage() {
             <Calendar1Icon size={24} />
             <p>Registrar horas</p>
           </Button>
-          <Button className="flex-1 bg-white border" variant={"secondary"} onClick={() => exportToExcel(data?.horas || [])}>
+          <Button className="flex-1 bg-white border" variant={"secondary"} onClick={() => exportToExcel(data?.horas || [], `Reporte-${practicante?.nombre}`)}>
             <FileDownIcon size={24} />
             <p>Exportar reporte</p>
           </Button>
@@ -142,7 +142,7 @@ export default function PracticantePage() {
           <h3 className="text-xl font-bold text-orange-600">Actividad Reciente</h3>
           <p className="text-lg font-medium text-neutral-600">Últimos registros de asistencia</p>
 
-          <div className="flex flex-col items-center justify-center min-h-[200px]">
+          <div className="flex flex-col items-center min-h-[200px]">
             {horas.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-gray-500">
                 <Image

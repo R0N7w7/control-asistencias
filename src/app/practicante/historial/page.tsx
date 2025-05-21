@@ -21,7 +21,7 @@ export default function Page() {
                     <h2 className="text-3xl font-bold text-orange-600">Historial de Horas</h2>
                     <p className="text-lg text-neutral-600 font-medium">Revisa el historial de tus horas registradas</p>
                 </div>
-                <Button className='bg-[#b91116] text-lg font-semibold mt-2 w-full flex items-center gap-4 sm:max-w-64' onClick={() => exportToExcel(data?.horas || [])}><FileDownIcon />Exportar Historial</Button>
+                <Button className='bg-[#b91116] text-lg font-semibold mt-2 w-full flex items-center gap-4 sm:max-w-64' onClick={() => exportToExcel(data?.horas || [], `Reporte-${data?.practicante?.nombre}`)}><FileDownIcon />Exportar Historial</Button>
             </div>
 
             <div className="w-full border bg-white p-4 rounded-sm flex flex-col gap-0">

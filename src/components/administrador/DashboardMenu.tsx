@@ -1,5 +1,4 @@
 "use client"
-import React, { useState, useCallback, JSX } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -8,22 +7,24 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet"
+import { createClient } from '@/lib/supabase/client'
 import {
-  Calendar1Icon,
-  HistoryIcon,
+  ChartPieIcon,
   HomeIcon,
   LogOutIcon,
-  MenuIcon
+  MenuIcon,
+  Users2Icon
 } from "lucide-react"
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
-import { ConfirmDialog } from '../ui/confirmDialog'
+import { JSX, useCallback, useState } from 'react'
+import { ConfirmDialog } from "../ui/confirmDialog"
 
 const enlaces = [
-  { title: 'Inicio', icon: <HomeIcon />, href: '/practicante/' },
-  { title: 'Calendario', icon: <Calendar1Icon />, href: '/practicante/calendario' },
-  { title: 'Historial', icon: <HistoryIcon />, href: '/practicante/historial' },
+  { title: 'Inicio', icon: <HomeIcon />, href: '/administrador/' },
+  { title: 'Practicantes', icon: <Users2Icon />, href: '/administrador/practicantes' },
+  { title: 'Reportes', icon: <ChartPieIcon />, href: '/administrador/reportes' },
 ]
+
 const NavItem = ({ title, icon, onClick }: { title: string, icon: JSX.Element, href: string, onClick: () => void }) => (
   <div
     onClick={onClick}
@@ -61,7 +62,7 @@ const DashboardMenu = () => {
           </SheetTrigger>
           <SheetContent side="left">
             <SheetHeader>
-              <SheetTitle>Practicante</SheetTitle>
+              <SheetTitle>Administrador</SheetTitle>
               <SheetDescription>
                 Navegación del sistema
               </SheetDescription>

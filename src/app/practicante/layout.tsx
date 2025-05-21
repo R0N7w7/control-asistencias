@@ -1,12 +1,34 @@
-"use client";
 import DashboardMenu from "@/components/practicante/DashboardMenu";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import React from "react";
 
 type Props = {
     children: React.ReactNode;
 };
 
-export default function Layout({ children }: Props) {
+export default async function Layout({ children }: Props) {
+    const supabase = await createClient();
+
+    const {
+        data: { user },
+        error: sessionError,
+    } = await supabase.auth.getUser()
+
+    if (!user || sessionError) {
+        return redirect('/login');
+    }
+
+    const { data: profile, error } = await supabase
+        .from('user_profiles')
+        .select('rol')
+        .eq('id', user.id)
+        .single();
+
+    if (error || profile?.rol !== 'practicante') {
+        return redirect('/login');
+    }
+
     return (
         <div>
             <DashboardMenu />

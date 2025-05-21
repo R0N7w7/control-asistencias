@@ -12,6 +12,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteAsistencia } from '@/lib/api/asistencias'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
+import { useParams } from 'next/navigation'
+import { ConfirmDialog } from '@/components/ui/confirmDialog'
 
 type Props = {
     data: Asistencia[];
@@ -22,6 +24,9 @@ export default function TablaHistorial({ data, isLoading }: Props) {
     const queryClient = useQueryClient();
     const [busqueda, setBusqueda] = useState<string>("");
     const [tipoBusqueda, SetTipoBusqueda] = useState<string>("todo");
+
+    const params = useParams();
+    const id = params.id;
 
     const filteredData = data.filter((item) => {
         const matchesSearch =
@@ -42,6 +47,9 @@ export default function TablaHistorial({ data, isLoading }: Props) {
             queryClient.invalidateQueries({
                 queryKey: ["initPracticante"],
             });
+            queryClient.invalidateQueries({
+                queryKey: [id as string]
+            })
         },
         onError: (error: Error) => {
             toast.error(error.message || "❌ Ocurrió un error al eliminar asistencia", {
@@ -99,8 +107,23 @@ export default function TablaHistorial({ data, isLoading }: Props) {
             cell: ({ row }) => <p className='font-semibold text-left w-64 text-wrap line-clamp-2'>{row.getValue("actividades") || "---"}</p>,
         },
         {
+            accessorKey: "user_id",
             header: "Acción",
-            cell: ({ row }) => <Button className='bg-[#b91116]' onClick={() => eliminarAsistencia(row.getValue('fecha'))} disabled={eliminando}><TrashIcon /></Button>
+            cell: ({ row }) => (
+                <ConfirmDialog
+                    title='¿Estás seguro de eliminar este registro de asistencia?'
+                    description='La eliminación de un registro podría generar inconsistencias en la información capturada, asegurate de que esta operación sea necesaria'
+                    confirmText='Eliminar'
+                    onConfirm={() => eliminarAsistencia({ fecha: row.getValue('fecha'), user_id: row.getValue('user_id') })}
+                >
+                    <Button
+                        className='bg-[#b91116]'
+                        disabled={eliminando}
+                    >
+                        <TrashIcon />
+                    </Button>
+                </ConfirmDialog>
+            )
         }
     ]
 
@@ -135,7 +158,7 @@ export default function TablaHistorial({ data, isLoading }: Props) {
             </div>
 
             <div className='border rounded-sm'>
-                {isLoading ? <Spinner className='text-[#b91116] my-8'/> : <DataTable columns={columns} data={filteredData} />}
+                {isLoading ? <Spinner className='text-[#b91116] my-8' /> : <DataTable columns={columns} data={filteredData} />}
             </div>
         </div>
     )

@@ -1,6 +1,13 @@
 interface Practicante {
     nombre: string;
     horasTotales: number,
+    id: string,
+    horasTotales: number,
+    fechaInicio: string,
+    fechaTermino: string,
+    telefono: string,
+    carrera: string,
+    email: string,
 }
 
 interface Asistencia {
