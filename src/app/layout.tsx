@@ -1,10 +1,26 @@
-"use client";
-
-import { Toaster } from "@/components/ui/sonner";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ClientWrapper from "@/components/clientWrapper";
+import type { Metadata } from "next";
 import "./globals.css";
 
-const queryClient = new QueryClient();
+export const metadata: Metadata = {
+  title: "Sistema de Gestión de Practicantes - DIDI",
+  description:
+    "Sistema de gestión de practicantes para la División de Investigación, Desarrollo e Innovación (DIDI). Herramienta integral para el seguimiento, control y evaluación de practicantes universitarios.",
+  keywords: [
+    "gestión",
+    "practicantes",
+    "sistema",
+    "DIDI",
+    "universidad",
+    "seguimiento",
+    "investigación",
+    "innovación",
+  ],
+  authors: [{ name: "División de I+D+i (DIDI)" }],
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -13,25 +29,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-          name="description"
-          content="Sistema de gestión de practicantes para la División de Investigación, Desarrollo e Innovación (DIDI). Herramienta integral para el seguimiento, control y evaluación de practicantes universitarios."
-        />
-        <meta name="author" content="DIDI" />
-        <meta name="keywords" content="gestión, practicantes, sistema, DIDI, universidad, seguimiento, investigación, innovación" />
-        <meta name="theme-color" content="#1e40af" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <link rel="icon" href="/favicon.ico" />
-        <title>Sistema de Gestión de Practicantes - DIDI</title>
-      </head>
       <body className="antialiased bg-gray-50 text-gray-900">
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-        <Toaster />
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   );
