@@ -85,7 +85,7 @@ const DashboardMenu = () => {
         </div>
         <ConfirmDialog
           title="¿Cerrar la sesión?"
-          description="la sesión se cerrará, serás redirigido al inicio de sesión"
+          description="La sesión se cerrará, serás redirigido al inicio de sesión"
           confirmText="Salir"
           onConfirm={handleSignOut}
           cancelText="Quedarme"

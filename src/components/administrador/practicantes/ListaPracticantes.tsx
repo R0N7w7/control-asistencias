@@ -97,8 +97,8 @@ export default function ListaPracticantes() {
                         <EyeIcon />
                     </Button>
                     <ConfirmDialog
-                        title='¿Estás seguro de eleminar al practicante?'
-                        description='Toda la información relacionada será eliminada, asegurate de  descargar un reporte primero.'
+                        title='¿Estás seguro de eliminar al practicante?'
+                        description='Toda la información relacionada será eliminada, asegurate de descargar un reporte primero.'
                         onConfirm={() => eliminarPracticante(row.getValue('id'))}
                     >
                         <Button
