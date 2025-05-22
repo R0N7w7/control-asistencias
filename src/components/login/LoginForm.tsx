@@ -4,6 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/client";
+import Image from "next/image";
 import { useRouter } from "next/navigation"; // Importar el hook de navegación
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,9 +51,12 @@ export default function LoginForm() {
 
     return (
         <div className="border w-full max-w-xl px-3  py-6 flex flex-col gap-6 rounded-md shadow-md bg-white">
+            <div className="w-full flex items-center justify-center">
+                <Image src={'/logo.png'} width={400} height={120} alt="logo"></Image>
+            </div>
             <div>
-                <h2 className="text-2xl font-extrabold text-[#FE5000]">Registro de Horas de Servicio Social</h2>
-                <p className="text-gray-500 text-lg font-medium">{renderMensaje()}</p>
+                <h2 className="text-2xl font-extrabold text-[#FE5000] text-center">Registro de Horas de Servicio Social</h2>
+                <p className="text-gray-500 text-lg font-medium text-center">{renderMensaje()}</p>
             </div>
 
             <Tabs
