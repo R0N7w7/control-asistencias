@@ -55,7 +55,7 @@ export default function LoginForm() {
                 <Image src={'/logo.png'} width={400} height={120} alt="logo"></Image>
             </div>
             <div>
-                <h2 className="text-2xl font-extrabold text-[#FE5000] text-center">Registro de Horas de Servicio Social</h2>
+                <h2 className="text-2xl font-extrabold text-[#FE5000] text-center">Registro de Horas de Servicio Social & Prácticas Profesionales</h2>
                 <p className="text-gray-500 text-lg font-medium text-center">{renderMensaje()}</p>
             </div>
 
